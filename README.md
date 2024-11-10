@@ -1,20 +1,13 @@
 <!-- BEGIN_TF_DOCS -->
 # terraform-azurerm-avm-template
 
-This is a template repo for Terraform Azure Verified Modules.
+This pattern module deploys the Azure IPAM (https://azure.github.io/ipam/#/) Solution as a container backed App Service using terraform.
 
-Things to do:
+## Prerequisites
 
-1. Set up a GitHub repo environment called `test`.
-1. Configure environment protection rule to ensure that approval is required before deploying to this environment.
-1. Install Docker Desktop to run tests
+The module does not deploy any of the "Azure Identities" mentioned in the Azure IPAM Solution (https://azure.github.io/ipam/#/deployment/README).
 
-> [!IMPORTANT]
-> As the overall AVM framework is not GA (generally available) yet - the CI framework and test automation is not fully functional and implemented across all supported languages yet - breaking changes are expected, and additional customer feedback is yet to be gathered and incorporated. Hence, modules **MUST NOT** be published at version `1.0.0` or higher at this time.
->
-> All module **MUST** be published as a pre-release version (e.g., `0.1.0`, `0.1.1`, `0.2.0`, etc.) until the AVM framework becomes GA.
->
-> However, it is important to note that this **DOES NOT** mean that the modules cannot be consumed and utilized. They **CAN** be leveraged in all types of environments (dev, test, prod etc.). Consumers can treat them just like any other IaC module and raise issues or feature requests against them as they learn from the usage of the module. Consumers should also read the release notes for each version, if considering updating to a more recent version of a module to see if there are any considerations or breaking changes etc.
+It is recommended that you initiate "Part 1" of the "Two-part" deployment detailed in the above link. This will create the App IDs and secret required to satisfy the required variables for this module.
 
 <!-- markdownlint-disable MD033 -->
 ## Requirements
@@ -29,29 +22,34 @@ The following requirements are needed by this module:
 
 - <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
 
-## Providers
-
-The following providers are used by this module:
-
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 3.71)
-
-- <a name="provider_modtm"></a> [modtm](#provider\_modtm) (~> 0.3)
-
-- <a name="provider_random"></a> [random](#provider\_random) (~> 3.5)
-
 ## Resources
 
 The following resources are used by this module:
 
+- [azurerm_cosmosdb_account.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_account) (resource)
+- [azurerm_cosmosdb_sql_container.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) (resource)
+- [azurerm_cosmosdb_sql_database.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_database) (resource)
+- [azurerm_cosmosdb_sql_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_role_assignment) (resource)
+- [azurerm_linux_web_app.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app) (resource)
 - [azurerm_management_lock.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_lock) (resource)
-- [azurerm_private_endpoint.this_managed_dns_zone_groups](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) (resource)
-- [azurerm_private_endpoint.this_unmanaged_dns_zone_groups](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) (resource)
-- [azurerm_private_endpoint_application_security_group_association.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint_application_security_group_association) (resource)
-- [azurerm_resource_group.TODO](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
-- [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
+- [azurerm_monitor_diagnostic_setting.appservice](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) (resource)
+- [azurerm_monitor_diagnostic_setting.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) (resource)
+- [azurerm_monitor_diagnostic_setting.webapp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) (resource)
+- [azurerm_network_security_rule.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) (resource)
+- [azurerm_network_security_rule.keyvault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) (resource)
+- [azurerm_network_security_rule.webapp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) (resource)
+- [azurerm_private_endpoint.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) (resource)
+- [azurerm_private_endpoint.keyvault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) (resource)
+- [azurerm_private_endpoint.webapp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) (resource)
+- [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
+- [azurerm_role_assignment.managedoperator](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
+- [azurerm_service_plan.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) (resource)
+- [azurerm_user_assigned_identity.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
 - [modtm_telemetry.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/resources/telemetry) (resource)
 - [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
 - [azurerm_client_config.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
+- [azurerm_client_config.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
+- [azurerm_subscription.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) (data source)
 - [modtm_module_source.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/data-sources/module_source) (data source)
 
 <!-- markdownlint-disable MD013 -->
@@ -59,85 +57,29 @@ The following resources are used by this module:
 
 The following input variables are required:
 
+### <a name="input_engine_app_id"></a> [engine\_app\_id](#input\_engine\_app\_id)
+
+Description: IPAM-Engine App Registration Client/App ID
+
+Type: `string`
+
+### <a name="input_engine_secret"></a> [engine\_secret](#input\_engine\_secret)
+
+Description: IPAM-Engine App Registration Client Secret
+
+Type: `string`
+
 ### <a name="input_location"></a> [location](#input\_location)
 
-Description: Azure region where the resource should be deployed.
-
-Type: `string`
-
-### <a name="input_name"></a> [name](#input\_name)
-
-Description: The name of the this resource.
-
-Type: `string`
-
-### <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)
-
-Description: The resource group where the resources will be deployed.
+Description: Azure region where the resource should be deployed.  
+If the resource\_group variable is given, the resource group location will take precedence   
+and location should be set to null
 
 Type: `string`
 
 ## Optional Inputs
 
 The following input variables are optional (have default values):
-
-### <a name="input_customer_managed_key"></a> [customer\_managed\_key](#input\_customer\_managed\_key)
-
-Description: A map describing customer-managed keys to associate with the resource. This includes the following properties:
-- `key_vault_resource_id` - The resource ID of the Key Vault where the key is stored.
-- `key_name` - The name of the key.
-- `key_version` - (Optional) The version of the key. If not specified, the latest version is used.
-- `user_assigned_identity` - (Optional) An object representing a user-assigned identity with the following properties:
-  - `resource_id` - The resource ID of the user-assigned identity.
-
-Type:
-
-```hcl
-object({
-    key_vault_resource_id = string
-    key_name              = string
-    key_version           = optional(string, null)
-    user_assigned_identity = optional(object({
-      resource_id = string
-    }), null)
-  })
-```
-
-Default: `null`
-
-### <a name="input_diagnostic_settings"></a> [diagnostic\_settings](#input\_diagnostic\_settings)
-
-Description: A map of diagnostic settings to create on the Key Vault. The map key is deliberately arbitrary to avoid issues where map keys maybe unknown at plan time.
-
-- `name` - (Optional) The name of the diagnostic setting. One will be generated if not set, however this will not be unique if you want to create multiple diagnostic setting resources.
-- `log_categories` - (Optional) A set of log categories to send to the log analytics workspace. Defaults to `[]`.
-- `log_groups` - (Optional) A set of log groups to send to the log analytics workspace. Defaults to `["allLogs"]`.
-- `metric_categories` - (Optional) A set of metric categories to send to the log analytics workspace. Defaults to `["AllMetrics"]`.
-- `log_analytics_destination_type` - (Optional) The destination type for the diagnostic setting. Possible values are `Dedicated` and `AzureDiagnostics`. Defaults to `Dedicated`.
-- `workspace_resource_id` - (Optional) The resource ID of the log analytics workspace to send logs and metrics to.
-- `storage_account_resource_id` - (Optional) The resource ID of the storage account to send logs and metrics to.
-- `event_hub_authorization_rule_resource_id` - (Optional) The resource ID of the event hub authorization rule to send logs and metrics to.
-- `event_hub_name` - (Optional) The name of the event hub. If none is specified, the default event hub will be selected.
-- `marketplace_partner_resource_id` - (Optional) The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic LogsLogs.
-
-Type:
-
-```hcl
-map(object({
-    name                                     = optional(string, null)
-    log_categories                           = optional(set(string), [])
-    log_groups                               = optional(set(string), ["allLogs"])
-    metric_categories                        = optional(set(string), ["AllMetrics"])
-    log_analytics_destination_type           = optional(string, "Dedicated")
-    workspace_resource_id                    = optional(string, null)
-    storage_account_resource_id              = optional(string, null)
-    event_hub_authorization_rule_resource_id = optional(string, null)
-    event_hub_name                           = optional(string, null)
-    marketplace_partner_resource_id          = optional(string, null)
-  }))
-```
-
-Default: `{}`
 
 ### <a name="input_enable_telemetry"></a> [enable\_telemetry](#input\_enable\_telemetry)
 
@@ -148,6 +90,20 @@ If it is set to false, then no telemetry will be collected.
 Type: `bool`
 
 Default: `true`
+
+### <a name="input_law_workspace_resource"></a> [law\_workspace\_resource](#input\_law\_workspace\_resource)
+
+Description: The Resource Id of the LAW workspace to use in place of one deployed as part of the pattern
+
+Type:
+
+```hcl
+object({
+    id = string
+  })
+```
+
+Default: `null`
 
 ### <a name="input_lock"></a> [lock](#input\_lock)
 
@@ -167,113 +123,349 @@ object({
 
 Default: `null`
 
-### <a name="input_managed_identities"></a> [managed\_identities](#input\_managed\_identities)
+### <a name="input_name"></a> [name](#input\_name)
 
-Description: Controls the Managed Identity configuration on this resource. The following properties can be specified:
+Description: The default name to use when constructing the resource names.  
+If a resource name is given in the variable resource\_names, that name takes precedence.
 
-- `system_assigned` - (Optional) Specifies if the System Assigned Managed Identity should be enabled.
-- `user_assigned_resource_ids` - (Optional) Specifies a list of User Assigned Managed Identity resource IDs to be assigned to this resource.
+Type: `string`
+
+Default: `"ipam"`
+
+### <a name="input_private_endpoint_cosmos"></a> [private\_endpoint\_cosmos](#input\_private\_endpoint\_cosmos)
+
+Description: Creates a private endpoint for the deployed cosmos db and optionally, integrates it with a private DNS zone and/or NSG
+```
+{
+  subnet_id              = Resource Id of the subnet in which to create the private endpoint for the cosmosdb. This subnet requires 1 free IP
+  name                   = (Optional) The Name to give to the private endpoint
+  nsg                    = (Optional) If given, the required security policies to allow connection to the private endpoint will be created
+    {
+      name                  = The name of the nsg
+      resource_group_name   = The name of the resource group holding the nsg
+      starting_priority     = The number to start the priority for the required security polices from. 1 policy is required
+      source_address_prefix = (Optional) A source range to allow to the private endpoint. Default is "VirtualNetwork"
+
+    }
+  private_dns_zone_id    = (Optional) Resource Id of the private dns zone used to resolve privatelink.documents.azure.com records
+  private_dns_zone_group = (Optional) Name of the Zone Group used by the private dns zone. Default is "default"
+  private_ip_addresses   = (Optional) Two IPs from the subnet to use for the private endpoint ip_configuration
+}
+```  
 
 Type:
 
 ```hcl
 object({
-    system_assigned            = optional(bool, false)
-    user_assigned_resource_ids = optional(set(string), [])
+    subnet_id = string
+    name      = optional(string)
+    nsg = optional(object({
+      name                  = string
+      resource_group_name   = string
+      starting_priority     = number
+      source_address_prefix = optional(string, "VirtualNetwork")
+    }))
+    private_dns_zone_id    = optional(string)
+    private_dns_zone_group = optional(string, "default")
+    private_ip_addresses   = optional(list(string))
+  })
+```
+
+Default: `null`
+
+### <a name="input_private_endpoint_keyvault"></a> [private\_endpoint\_keyvault](#input\_private\_endpoint\_keyvault)
+
+Description: Creates a private endpoint for the deployed keyvault and optionally, integrates it with a private DNS zone and/or NSG
+```
+{
+  subnet_id              = Resource Id of the subnet in which to create the private endpoint for the keyvault. This subnet requires 1 free IP
+  name                   = (Optional) The Name to give to the private endpoint
+  nsg                    = (Optional) If given, the required security policies to allow connection to the private endpoint will be created
+    {
+      name                  = The name of the nsg
+      resource_group_name   = The name of the resource group holding the nsg
+      starting_priority     = The number to start the priority for the required security polices from. 1 policy is required
+      source_address_prefix = (Optional) A source range to allow to the private endpoint. Default is "VirtualNetwork"
+
+    }
+  private_dns_zone_id    = (Optional) Resource Id of the private dns zone used to resolve privatelink.vaultcore.azure.net records
+  private_dns_zone_group = (Optional) Name of the Zone Group used by the private dns zone. Default is "default"
+  private_ip_address     = (Optional) The IP from the subnet to use for the private endpoint ip_configuration
+}
+```  
+
+Type:
+
+```hcl
+object({
+    subnet_id = string
+    name      = optional(string)
+    nsg = optional(object({
+      name                  = string
+      resource_group_name   = string
+      starting_priority     = number
+      source_address_prefix = optional(string, "VirtualNetwork")
+    }))
+    private_dns_zone_id    = optional(string)
+    private_dns_zone_group = optional(string, "default")
+    private_ip_address     = optional(string)
+  })
+```
+
+Default: `null`
+
+### <a name="input_private_endpoint_webapp"></a> [private\_endpoint\_webapp](#input\_private\_endpoint\_webapp)
+
+Description: Creates a private endpoint for the deployed web app and optionally, integrates it with a private DNS zone and/or NSG
+```
+{
+  subnet_id              = Resource Id of the subnet in which to create the private endpoint for the web app. This subnet requires 1 free IP
+  name                   = (Optional) The Name to give to the private endpoint
+  nsg                    = (Optional) If given, the required security policies to allow connection to the private endpoint will be created
+    {
+      name                  = The name of the nsg
+      resource_group_name   = The name of the resource group holding the nsg
+      starting_priority     = The number to start the priority for the required security polices from. 1 policy is required
+      source_address_prefix = (Optional) A source range to allow to the private endpoint. Default is "VirtualNetwork"
+    }
+  private_dns_zone_id    = (Optional) Resource Id of the private dns zone used to resolve privatelink.azurewebsites.net records
+  private_dns_zone_group = (Optional) Name of the Zone Group used by the private dns zone. Default is "default"
+  private_ip_address     = (Optional) The IP from the subnet to use for the private endpoint ip_configuration
+}
+```  
+
+Type:
+
+```hcl
+object({
+    subnet_id = string
+    name      = optional(string)
+    nsg = optional(object({
+      name                  = string
+      resource_group_name   = string
+      starting_priority     = number
+      source_address_prefix = optional(string, "VirtualNetwork")
+    }))
+    private_dns_zone_id    = optional(string)
+    private_dns_zone_group = optional(string, "default")
+    private_ip_address     = optional(string)
+  })
+```
+
+Default: `null`
+
+### <a name="input_public_access_cosmos"></a> [public\_access\_cosmos](#input\_public\_access\_cosmos)
+
+Description: Configure Public Access to the cosmos account , by default the cosmos account is public.
+```
+{
+  enabled                    = (Optional) Enable or disable public access to the cosmos account. Default is true
+  ip_rules                   = (Optional) The list of IP addresses that are allowed to access the key vault.
+  virtual_network_subnet_ids = (Optional) The list of virtual network subnet ids that are allowed to access the key vault.
+}
+```
+
+Type:
+
+```hcl
+object({
+    enabled                    = optional(bool, true)
+    ip_rules                   = optional(list(string))
+    virtual_network_subnet_ids = optional(list(string))
   })
 ```
 
 Default: `{}`
 
-### <a name="input_private_endpoints"></a> [private\_endpoints](#input\_private\_endpoints)
+### <a name="input_public_access_keyvault"></a> [public\_access\_keyvault](#input\_public\_access\_keyvault)
 
-Description: A map of private endpoints to create on this resource. The map key is deliberately arbitrary to avoid issues where map keys maybe unknown at plan time.
-
-- `name` - (Optional) The name of the private endpoint. One will be generated if not set.
-- `role_assignments` - (Optional) A map of role assignments to create on the private endpoint. The map key is deliberately arbitrary to avoid issues where map keys maybe unknown at plan time. See `var.role_assignments` for more information.
-- `lock` - (Optional) The lock level to apply to the private endpoint. Default is `None`. Possible values are `None`, `CanNotDelete`, and `ReadOnly`.
-- `tags` - (Optional) A mapping of tags to assign to the private endpoint.
-- `subnet_resource_id` - The resource ID of the subnet to deploy the private endpoint in.
-- `private_dns_zone_group_name` - (Optional) The name of the private DNS zone group. One will be generated if not set.
-- `private_dns_zone_resource_ids` - (Optional) A set of resource IDs of private DNS zones to associate with the private endpoint. If not set, no zone groups will be created and the private endpoint will not be associated with any private DNS zones. DNS records must be managed external to this module.
-- `application_security_group_resource_ids` - (Optional) A map of resource IDs of application security groups to associate with the private endpoint. The map key is deliberately arbitrary to avoid issues where map keys maybe unknown at plan time.
-- `private_service_connection_name` - (Optional) The name of the private service connection. One will be generated if not set.
-- `network_interface_name` - (Optional) The name of the network interface. One will be generated if not set.
-- `location` - (Optional) The Azure location where the resources will be deployed. Defaults to the location of the resource group.
-- `resource_group_name` - (Optional) The resource group where the resources will be deployed. Defaults to the resource group of this resource.
-- `ip_configurations` - (Optional) A map of IP configurations to create on the private endpoint. If not specified the platform will create one. The map key is deliberately arbitrary to avoid issues where map keys maybe unknown at plan time.
-  - `name` - The name of the IP configuration.
-  - `private_ip_address` - The private IP address of the IP configuration.
+Description: Configure Public Access to the keyvault, by default the keyvault is made public.
+```
+{
+  enabled                    = (Optional) Enable or disable public access to the key vault. Default is true
+  bypass                     = (Optional) The bypass property specifies whether to allow requests to the key vault from the Azure services. Default is "AzureServices"
+  ip_rules                   = (Optional) The list of IP addresses that are allowed to access the key vault.
+  virtual_network_subnet_ids = (Optional) The list of virtual network subnet ids that are allowed to access the key vault.
+}
+```
 
 Type:
 
 ```hcl
-map(object({
-    name = optional(string, null)
-    role_assignments = optional(map(object({
-      role_definition_id_or_name             = string
-      principal_id                           = string
-      description                            = optional(string, null)
-      skip_service_principal_aad_check       = optional(bool, false)
-      condition                              = optional(string, null)
-      condition_version                      = optional(string, null)
-      delegated_managed_identity_resource_id = optional(string, null)
-    })), {})
-    lock = optional(object({
-      kind = string
-      name = optional(string, null)
-    }), null)
-    tags                                    = optional(map(string), null)
-    subnet_resource_id                      = string
-    private_dns_zone_group_name             = optional(string, "default")
-    private_dns_zone_resource_ids           = optional(set(string), [])
-    application_security_group_associations = optional(map(string), {})
-    private_service_connection_name         = optional(string, null)
-    network_interface_name                  = optional(string, null)
-    location                                = optional(string, null)
-    resource_group_name                     = optional(string, null)
-    ip_configurations = optional(map(object({
-      name               = string
-      private_ip_address = string
-    })), {})
-  }))
+object({
+    enabled                    = optional(bool, true)
+    bypass                     = optional(string, "AzureServices")
+    ip_rules                   = optional(list(string))
+    virtual_network_subnet_ids = optional(list(string))
+  })
 ```
 
 Default: `{}`
 
-### <a name="input_private_endpoints_manage_dns_zone_group"></a> [private\_endpoints\_manage\_dns\_zone\_group](#input\_private\_endpoints\_manage\_dns\_zone\_group)
+### <a name="input_public_access_webapp"></a> [public\_access\_webapp](#input\_public\_access\_webapp)
 
-Description: Whether to manage private DNS zone groups with this module. If set to false, you must manage private DNS zone groups externally, e.g. using Azure Policy.
-
-Type: `bool`
-
-Default: `true`
-
-### <a name="input_role_assignments"></a> [role\_assignments](#input\_role\_assignments)
-
-Description: A map of role assignments to create on this resource. The map key is deliberately arbitrary to avoid issues where map keys maybe unknown at plan time.
-
-- `role_definition_id_or_name` - The ID or name of the role definition to assign to the principal.
-- `principal_id` - The ID of the principal to assign the role to.
-- `description` - The description of the role assignment.
-- `skip_service_principal_aad_check` - If set to true, skips the Azure Active Directory check for the service principal in the tenant. Defaults to false.
-- `condition` - The condition which will be used to scope the role assignment.
-- `condition_version` - The version of the condition syntax. Valid values are '2.0'.
-
-> Note: only set `skip_service_principal_aad_check` to true if you are assigning a role to a service principal.
+Description: Configure Public Access to the WebApp, by default the WebApp is made public.  
+One and only one of ip\_address, service\_tag or virtual\_network\_subnet\_id can be specified for each rule.
+```
+enabled = (Optional) Enable or disable public access to the WebApp. Default is true
+rules   = (Optional) The map of rules that are allowed or denied to access the WebApp.
+  {
+    action                    = (Optional) The action to take on the rule. Default is "Allow"
+    ip_address                = (Optional) The IP address to allow or deny.
+    priority                  = The priority of the rule. Starts at 100, the lower the number, the higher the priority.
+    service_tag               = (Optional) The service tag to allow or deny.
+    virtual_network_subnet_id = (Optional) The virtual network subnet id to allow or deny.
+  }
+```
 
 Type:
 
 ```hcl
-map(object({
-    role_definition_id_or_name             = string
-    principal_id                           = string
-    description                            = optional(string, null)
-    skip_service_principal_aad_check       = optional(bool, false)
-    condition                              = optional(string, null)
-    condition_version                      = optional(string, null)
-    delegated_managed_identity_resource_id = optional(string, null)
-  }))
+object({
+    enabled = optional(bool, true)
+    rules = optional(map(object({
+      action                    = optional(string, "Allow")
+      ip_address                = optional(string)
+      priority                  = number
+      service_tag               = optional(string)
+      virtual_network_subnet_id = optional(string)
+    })), {})
+  })
+```
+
+Default: `{}`
+
+### <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group)
+
+Description: A valid azurerm\_resource\_group object to use in place of one deployed as part of the pattern.
+
+Type:
+
+```hcl
+object({
+    id       = string
+    location = string
+    name     = string
+  })
+```
+
+Default: `null`
+
+### <a name="input_resource_names"></a> [resource\_names](#input\_resource\_names)
+
+Description: Alternative names to use for resources deployed by this pattern.
+
+Type:
+
+```hcl
+object({
+    cosmosdb_account          = optional(string)
+    key_vault                 = optional(string)
+    log_analytics_workspace   = optional(string)
+    management_lock           = optional(string)
+    private_endpoint          = optional(string)
+    resource_group            = optional(string)
+    service_plan              = optional(string)
+    user_assigned_identity    = optional(string)
+    web_app                   = optional(string)
+    private_endpoint_keyvault = optional(string)
+    private_endpoint_cosmos   = optional(string)
+    private_endpoint_webapp   = optional(string)
+  })
+```
+
+Default: `{}`
+
+### <a name="input_service_plan_resource"></a> [service\_plan\_resource](#input\_service\_plan\_resource)
+
+Description: The Resource Id of the Service Plan to use in place of one deployed as part of the pattern
+
+Type:
+
+```hcl
+object({
+    id   = string
+    name = string
+  })
+```
+
+Default: `null`
+
+### <a name="input_settings_cosmos"></a> [settings\_cosmos](#input\_settings\_cosmos)
+
+Description:   Overrides the default settings for the cosmos resource. The following properties can be specified:
+  - `capabilities` - (Optional) The list of capabilities to enable for the cosmos account.
+  - `consistency_level` - (Optional) The consistency level for the cosmos account.
+  - `free_tier_enabled` - (Optional) Whether the cosmos account should use the free tier.
+  - `max_throughput` - (Optional) The maximum throughput for the cosmos account.
+  - `tags` - (Optional) A mapping of tags to assign to the cosmos module.
+  - `zone_redundant` - (Optional) Whether the cosmos account should be zone redundant.
+
+Type:
+
+```hcl
+object({
+    capabilities      = optional(list(string), [])
+    consistency_level = optional(string, "Session")
+    free_tier_enabled = optional(bool)
+    max_throughput    = optional(number, 1000)
+    tags              = optional(map(string))
+    zone_redundant    = optional(bool, true)
+  })
+```
+
+Default: `{}`
+
+### <a name="input_settings_keyvault"></a> [settings\_keyvault](#input\_settings\_keyvault)
+
+Description:   Overrides the default settings for the keyvault resource. The following properties can be specified:
+  - `deployment_user_kv_admin_role` - (Optional) The role definition id or name to assign to the deployment user for the keyvault module.
+  - `managed_identity_kv_user_role` - (Optional) The role definition id or name to assign to the managed identity for the keyvault module.  
+  - `sku_name` - (Optional) The SKU name to use for the keyvault module.
+  - `tags` - (Optional) A mapping of tags to assign to the keyvault module.
+
+Type:
+
+```hcl
+object({
+    deployment_user_kv_admin_role = optional(string, "Key Vault Administrator")
+    managed_identity_kv_user_role = optional(string, "Key Vault Secrets User")
+    sku_name                      = optional(string, "standard")
+    tags                          = optional(map(string))
+  })
+```
+
+Default: `{}`
+
+### <a name="input_settings_webapp"></a> [settings\_webapp](#input\_settings\_webapp)
+
+Description:   Overrides the default settings for the cosmos resource. The following properties can be specified:
+  - `docker_image_name` - (Optional) The docker image, including tag, to be used.
+  - `docker_registry_url` - (Optional) The URL of the container registry where the docker\_image\_name is located.
+  - `docker_registry_username` - (Optional) The User Name to use for authentication against the registry to pull the image.
+  - `docker_registry_password` - (Optional) The Password to use for authentication against the registry to pull the image.
+  - `log_retention_in_days` - (Optional) The retention period in days. A value of 0 means no retention.
+  - `log_retention_in_mb` - (Optional) The maximum size in megabytes that log files can use.
+  - `os_type` - (Optional) The OS type for the Service Plan.
+  - `sku_name` - (Optional) The SKU name for the Service Plan.
+  - `tags` - (Optional) A mapping of tags to assign to the cosmos module.
+  - `zone_balancing_enabled` - (Optional) Whether the app service should be zone balanced.
+
+Type:
+
+```hcl
+object({
+    docker_image_name        = optional(string, "ipam:latest")
+    docker_registry_url      = optional(string, "https://azureipam.azurecr.io")
+    docker_registry_username = optional(string)
+    docker_registry_password = optional(string)
+    log_retention_in_days    = optional(number, 7)
+    log_retention_in_mb      = optional(number, 50)
+    os_type                  = optional(string, "Linux")
+    sku_name                 = optional(string, "P1v3")
+    tags                     = optional(map(string))
+    zone_balancing_enabled   = optional(bool, true)
+  })
 ```
 
 Default: `{}`
@@ -286,21 +478,117 @@ Type: `map(string)`
 
 Default: `null`
 
+### <a name="input_ui_app_id"></a> [ui\_app\_id](#input\_ui\_app\_id)
+
+Description: IPAM-UI App Registration Client/App ID
+
+Type: `string`
+
+Default: `"00000000-0000-0000-0000-000000000000"`
+
+### <a name="input_virtual_network_integration"></a> [virtual\_network\_integration](#input\_virtual\_network\_integration)
+
+Description: Integrate the Web App with an existing virtual network and optionally, integrates it with an NSG to populate the rules it requires to operate.
+```
+{
+  subnet_id = The subnet id which will be used by the Web App for regional virtual network integration. This subnet must have a delegation to Microsoft.Web/serverFarms
+  nsg       = (Optional) If given, the required security policies to allow the Web App to operate will be created
+    {
+      name                  = The name of the nsg
+      resource_group_name   = The name of the resource group holding the nsg
+      starting_priority     = The number to start the priority for the required security polices from. 1 policy is required
+      subnet_address_prefix = The address space for the subnet used for the integration
+    }
+}
+```  
+
+Type:
+
+```hcl
+object({
+    subnet_id = string
+    nsg = optional(object({
+      name                  = string
+      resource_group_name   = string
+      starting_priority     = number
+      subnet_address_prefix = string
+    }))
+  })
+```
+
+Default: `null`
+
 ## Outputs
 
 The following outputs are exported:
 
-### <a name="output_private_endpoints"></a> [private\_endpoints](#output\_private\_endpoints)
+### <a name="output_azurerm_cosmosdb_account"></a> [azurerm\_cosmosdb\_account](#output\_azurerm\_cosmosdb\_account)
 
-Description:   A map of the private endpoints created.
+Description: Cosmos account resource created by the module
 
-### <a name="output_resource"></a> [resource](#output\_resource)
+### <a name="output_azurerm_cosmosdb_sql_container"></a> [azurerm\_cosmosdb\_sql\_container](#output\_azurerm\_cosmosdb\_sql\_container)
 
-Description: This is the full output for the resource.
+Description: Cosmos sql container resource created by the module
+
+### <a name="output_azurerm_cosmosdb_sql_database"></a> [azurerm\_cosmosdb\_sql\_database](#output\_azurerm\_cosmosdb\_sql\_database)
+
+Description: Cosmos sql database resource created by the module
+
+### <a name="output_azurerm_key_vault"></a> [azurerm\_key\_vault](#output\_azurerm\_key\_vault)
+
+Description: Key vault resource created by the Azure Key Vault module
+
+### <a name="output_azurerm_key_vault_secret"></a> [azurerm\_key\_vault\_secret](#output\_azurerm\_key\_vault\_secret)
+
+Description: A map of secret resources created by the Azure Key Vault Secret module
+
+### <a name="output_azurerm_linux_web_app"></a> [azurerm\_linux\_web\_app](#output\_azurerm\_linux\_web\_app)
+
+Description: Linux Web App resource created by the module
+
+### <a name="output_azurerm_log_analytics_workspace"></a> [azurerm\_log\_analytics\_workspace](#output\_azurerm\_log\_analytics\_workspace)
+
+Description: LAW resource created by the Azure Operationalinsights Workspace module
+
+### <a name="output_azurerm_network_security_rule"></a> [azurerm\_network\_security\_rule](#output\_azurerm\_network\_security\_rule)
+
+Description: A map of maps for the security rules created by the module
+
+### <a name="output_azurerm_private_endpoint"></a> [azurerm\_private\_endpoint](#output\_azurerm\_private\_endpoint)
+
+Description: A map of private endpoints resources created by the module
+
+### <a name="output_azurerm_resource_group"></a> [azurerm\_resource\_group](#output\_azurerm\_resource\_group)
+
+Description: Resource group used by the module
+
+### <a name="output_azurerm_service_plan"></a> [azurerm\_service\_plan](#output\_azurerm\_service\_plan)
+
+Description: Service plan resource created by the module
+
+### <a name="output_azurerm_user_assigned_identity"></a> [azurerm\_user\_assigned\_identity](#output\_azurerm\_user\_assigned\_identity)
+
+Description: Manged Identity resource created by the module
+
+### <a name="output_url"></a> [url](#output\_url)
+
+Description: URL of the deployed Azure IPAM Service
 
 ## Modules
 
-No modules.
+The following Modules are called:
+
+### <a name="module_keyvault"></a> [keyvault](#module\_keyvault)
+
+Source: Azure/avm-res-keyvault-vault/azurerm
+
+Version: 0.5.3
+
+### <a name="module_law"></a> [law](#module\_law)
+
+Source: Azure/avm-res-operationalinsights-workspace/azurerm
+
+Version: 0.1.3
 
 <!-- markdownlint-disable-next-line MD041 -->
 ## Data Collection
