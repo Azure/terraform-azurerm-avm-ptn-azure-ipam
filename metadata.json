@@ -4,5 +4,8 @@
   "moduleDescription": "AVM Pattern Module for IPAM",
   "canonicalType": "azure-ipam",
   "owners": [],
-  "telemetryIdPrefix": "46d3xtrf.ptn.1e128e8"
+  "telemetryIdPrefix": "46d3xtrf.ptn.1e128e8",
+  "alternativeNames": [
+    "IP Address Management"
+  ]
 }
